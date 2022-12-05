@@ -29,9 +29,9 @@ newStates = {
     "minTime": config["timeLimit"],
     "maxTime": -1,
     "floor3Mode": False,
-    "multiCharacterMode": True,
+    "multiCharacterMode": False,
     "currentCharacter": config["mainCharacter"],
-    "multiCharacterModeState": [1, 1, 1, 1, 1],
+    "multiCharacterModeState": [],
 }
 
 
@@ -389,7 +389,6 @@ def enterChaos():
                     pyautogui.click(button="left")
                     sleep(200, 300)
                 elif _curr["ilvl-aor"] == 1370:
-                    print("1370")
                     # punica
                     pyautogui.moveTo(1112, 307)
                     sleep(200, 300)
@@ -401,7 +400,6 @@ def enterChaos():
                     pyautogui.click(button="left")
                     sleep(200, 300)
                 elif _curr["ilvl-aor"] == 1100:
-                    print("1100")
                     # punica
                     pyautogui.moveTo(1112, 307)
                     sleep(200, 300)
@@ -436,7 +434,6 @@ def enterChaos():
                     pyautogui.click(button="left")
                     sleep(200, 300)
                 elif _curr["ilvl-endless"] == 1370:
-                    print('e1370')
                     # punica
                     pyautogui.moveTo(1112, 307)
                     sleep(200, 300)
@@ -448,7 +445,6 @@ def enterChaos():
                     pyautogui.click(button="left")
                     sleep(200, 300)
                 elif _curr["ilvl-endless"] == 1100:
-                    print('e1100')
                     # punica
                     pyautogui.moveTo(1112, 307)
                     sleep(200, 300)
