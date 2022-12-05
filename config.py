@@ -33,67 +33,51 @@ config = {
     "characters": [
         {
             "index": 0,
-            "class": "sorceress",
-            "ilvl-endless": 1475,
-            "ilvl-aor": 1475,
+            "class": "paladin",
+            "ilvl-endless": 1370,
+            "ilvl-aor": 1370, 
             "lopang": False,
-            "guildDonation": True,
+            "guildDonation": False,
         },
         {
             "index": 1,
-            "class": "arcana",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1475,
+            "class": "glaiver",
+            "ilvl-endless": 1100,
+            "ilvl-aor": 1100,
             "lopang": False,
-            "guildDonation": True,
+            "guildDonation": False,
         },
         {
             "index": 2,
-            "class": "sorceress",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1445,
-            "lopang": True,
-            "guildDonation": True,
+            "class": "hawkeye",
+            "ilvl-endless": 00,
+            "ilvl-aor": 00,
+            "lopang": False,
+            "guildDonation": False,
         },
         {
             "index": 3,
             "class": "sorceress",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1370,
-            "lopang": True,
-            "guildDonation": True,
+            "ilvl-endless": 00,
+            "ilvl-aor": 00,
+            "lopang": False,
+            "guildDonation": False,
         },
         {
             "index": 4,
-            "class": "sorceress",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1370,
-            "lopang": True,
-            "guildDonation": True,
-        },
-        {
-            "index": 5,
-            "class": "sorceress",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1370,
-            "lopang": True,
-            "guildDonation": True,
-        },
-        {
-            "index": 6,
-            "class": "deathblade",
-            "ilvl-endless": 1100,
-            "ilvl-aor": 1100,
-            "lopang": True,
-            "guildDonation": True,
+            "class": "berserker",
+            "ilvl-endless": 00,
+            "ilvl-aor": 00,
+            "lopang": False,
+            "guildDonation": False,
         },
     ],
     "floor3Mode": False,  # only enable if you ONLY want to run infinite floor3 clearing
     "selectLevel": True,  # TODO: to be deprecated soon, DO NOT TOUCH
     "performance": False,  # set True for lower-end PCs
     "interact": "g",  # change this if you have binded it to something else eg.mouse button
-    "move": "left",  # or "right"
-    "blink": "space",
+    "move": "right",  # or "left"
+    "blink": "space", 
     "meleeAttack": "c",
     "awakening": "v",
     "healthPot": "f1",  # important to put your regen potion on this button
@@ -120,7 +104,7 @@ config = {
     "screenCenterY": 540,
     "minimapCenterX": 1772,
     "minimapCenterY": 272,
-    "timeLimit": 420000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
+    "timeLimit": 680000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
     "blackScreenTimeLimit": 30000,  # if stuck in nothing for this amount of time, alt f4 game, restart and resume.
     "delayedStart": 3000,
     "healthCheckX": 690,
