@@ -31,9 +31,9 @@ newStates = {
     "minTime": config["timeLimit"],
     "maxTime": -1,
     "floor3Mode": True,
-    "multiCharacterMode": False,
+    "multiCharacterMode": True,
     "currentCharacter": config["mainCharacter"],
-    "multiCharacterModeState": [1, 1, 2, 2, 6, 6],
+    "multiCharacterModeState": [0, 1, 2, 2, 6, 6],
 }
 
 
@@ -2755,7 +2755,7 @@ def switchToCharacter(index):
 
     states["currentCharacter"] = index
     sleep(10000, 12000)
-    if config["GFM"] == True:
+    if config["GFN"] == True:
         sleep(10000, 12000)
 
 
