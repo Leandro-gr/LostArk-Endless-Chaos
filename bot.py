@@ -31,9 +31,9 @@ newStates = {
     "minTime": config["timeLimit"],
     "maxTime": -1,
     "floor3Mode": False,
-    "multiCharacterMode": True,
+    "multiCharacterMode": False,
     "currentCharacter": config["mainCharacter"],
-    "multiCharacterModeState": [1, 1, 1, 1, 1],
+    "multiCharacterModeState": [0, 2, 2, 2, 6, 6],
 }
 
 
