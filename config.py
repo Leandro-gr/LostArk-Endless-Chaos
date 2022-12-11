@@ -21,9 +21,12 @@
     Then set your 2/4/5 (because i dont have no3 unlocked) bifrost location to be right in front of those three lopang quest hand-in NPCs.
 """
 config = {
-    "mainCharacter": 0,  # must be in number 0 to 5 (0 is the first character)
+    "mainCharacter": 4,  # must be in number 0 to 5 (0 is the first character)
+    "GFN": True,  # set True for GFN users
+    "enableMultiCharacterMode": False,  # this is lit
     "enableLopang": True,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^
     "enableGuildDonation": True,  # please make sure all your characters have a guild
+    "enableRapport": True,  # NOTE: you need to setup bifrost no3 infront of a rapport NPC
     # Setup your characters below:
     # can setup UP TO 9 characters for daily chaos/lopang/guild stuff
     # however your main must be in character 0 to 5 (just for re-connect back after disconnection happens)
@@ -34,18 +37,20 @@ config = {
         {
             "index": 0,
             "class": "paladin",
-            "ilvl-endless": 1370,
-            "ilvl-aor": 1370, 
+            "ilvl-endless": 1445,
+            "ilvl-aor": 1445, 
             "lopang": False,
             "guildDonation": False,
+            "rapport": False,
         },
         {
             "index": 1,
             "class": "glaiver",
-            "ilvl-endless": 1100,
-            "ilvl-aor": 1100,
+            "ilvl-endless": 1370,
+            "ilvl-aor": 1370,
             "lopang": False,
             "guildDonation": False,
+            "rapport": False,
         },
         {
             "index": 2,
@@ -54,14 +59,16 @@ config = {
             "ilvl-aor": 00,
             "lopang": False,
             "guildDonation": False,
+            "rapport": False,
         },
         {
             "index": 3,
             "class": "sorceress",
-            "ilvl-endless": 00,
-            "ilvl-aor": 00,
+            "ilvl-endless": 1100,
+            "ilvl-aor": 1100,
             "lopang": False,
             "guildDonation": False,
+            "rapport": False,
         },
         {
             "index": 4,
@@ -70,6 +77,16 @@ config = {
             "ilvl-aor": 00,
             "lopang": False,
             "guildDonation": False,
+            "rapport": False,
+        },
+        {
+            "index": 5,
+            "class": "scrapper",
+            "ilvl-endless": 1370,
+            "ilvl-aor": 1370,
+            "lopang": False,
+            "guildDonation": False,
+            "rapport": False,
         },
     ],
     "floor3Mode": False,  # only enable if you ONLY want to run infinite floor3 clearing
@@ -89,12 +106,14 @@ config = {
     "shortcutEnterChaos": True,  # you want to use True
     "useHealthPot": True,  # you want to use True
     # You might not want to touch anything below, because I assume you have your game setup same as mine :) otherwise something might not work properly!
+    "confidenceForGFN": 0.9,
     "regions": {
         "minimap": (1655, 170, 260, 200),  # (1700, 200, 125, 120)
         "abilities": (625, 779, 300, 155),
         "leaveMenu": (0, 154, 250, 300),
         "buffs": (625, 779, 300, 60),
-        "center": (782, 353, 400, 350),
+        "center": (685, 280, 550, 420),
+        "portal": (228, 230, 1370, 570),
     },
     "screenResolutionX": 1920,
     "screenResolutionY": 1080,
@@ -104,7 +123,8 @@ config = {
     "screenCenterY": 540,
     "minimapCenterX": 1772,
     "minimapCenterY": 272,
-    "timeLimit": 680000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
+    "timeLimit": 500000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
+    "timeLimitAor": 600000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
     "blackScreenTimeLimit": 30000,  # if stuck in nothing for this amount of time, alt f4 game, restart and resume.
     "delayedStart": 3000,
     "healthCheckX": 690,
