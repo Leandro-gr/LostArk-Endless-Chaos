@@ -11,6 +11,7 @@ newStates = {
     "status": "inCity",
     "abilities": [],
     "abilityScreenshots": [],
+    "bossBarLocated": False,
     "clearCount": 0,
     "fullClearCount": 0,
     "moveToX": config["screenCenterX"],
@@ -79,6 +80,7 @@ def main():
         if states["status"] == "inCity":
             # initialize new states
             states["abilityScreenshots"] = []
+            states["bossBarLocated"] = False
 
             sleep(1000, 1200)
             if offlineCheck():
@@ -803,6 +805,8 @@ def doFloor1():
             return
 
         print("floor 1 cleared")
+        if states["status"] == "floor2":
+            return
         calculateMinimapRelative(states["moveToX"], states["moveToY"])
         if enterPortal():
             break
@@ -821,6 +825,7 @@ def doFloor1():
 
 
 def doFloor2():
+    states["bossBarLocated"] = False
     clearQuest()
     sleep(500, 550)
     # check repair
@@ -867,10 +872,11 @@ def doFloor2():
 
 
 def doFloor3Portal():
+    states["bossBarLocated"] = False
     bossBar = None
     goldMob = False
     normalMob = False
-    for i in range(0, 10):
+    for i in range(0, 15):
         goldMob = checkFloor3GoldMob()
         normalMob = checkFloor2Mob()
         bossBar = pyautogui.locateOnScreen(
@@ -1151,15 +1157,15 @@ def printResult():
         states["minTime"] = int(min(lastRun, states["minTime"]))
         states["maxTime"] = int(max(lastRun, states["maxTime"]))
     print(
-        "floor 2 runs: {}, floor 3 runs: {}, total death: {}, timeout runs: {}, dc: {}, crash: {}, restart: {}".format(
+        "floor 2 runs: {}, floor 3 runs: {}, total death: {}, timeout runs: {}, dc: {}, crash: {}, restart: {}, badRunCount(not using now): {}".format(
             states["clearCount"],
             states["fullClearCount"],
-            # states["badRunCount"],
             states["deathCount"],
             states["timeoutCount"],
             states["gameOfflineCount"],
             states["gameCrashCount"],
             states["gameRestartCount"],
+            states["badRunCount"],
         )
     )
     print(
@@ -1194,13 +1200,6 @@ def useAbilities():
         if states["status"] == "floor2" and not checkFloor2Elite() and checkFloor2Mob():
             calculateMinimapRelative(states["moveToX"], states["moveToY"])
             moveToMinimapRelative(states["moveToX"], states["moveToY"], 400, 500, False)
-        elif states["status"] == "floor2" and checkFloor2Boss():
-            # to avoid stuck on that 9 square map...
-            randomMove()
-        elif states["status"] == "floor1" and not checkFloor2Mob():
-            print("no mob on floor 1, random move to detect portal")
-            randomMove()
-            sleep(200, 250)
         elif (
             states["status"] == "floor2"
             and not checkFloor2Elite()
@@ -1208,7 +1207,12 @@ def useAbilities():
         ):
             print("no elite/mob on floor 2, random move to detect portal")
             randomMove()
-            sleep(200, 250)
+        elif states["status"] == "floor2" and checkFloor2Boss():
+            # to avoid stuck on that 9 square map...
+            randomMove()
+        elif states["status"] == "floor1" and not checkFloor2Mob():
+            print("no mob on floor 1, random move to detect portal")
+            randomMove()
         elif states["status"] == "floor3" and checkFloor2Elite():
             calculateMinimapRelative(states["moveToX"], states["moveToY"])
             moveToMinimapRelative(states["moveToX"], states["moveToY"], 200, 300, False)
@@ -1302,11 +1306,6 @@ def useAbilities():
                 moveToMinimapRelative(
                     states["moveToX"], states["moveToY"], 1200, 1300, True
                 )
-                if (
-                    config["characters"][states["currentCharacter"]]["class"]
-                    == "sorceress"
-                ):
-                    pydirectinput.press("x")
                 sleep(200, 220)
                 clickTower()
             elif states["status"] == "floor3" and checkFloor2Mob():
@@ -1434,16 +1433,18 @@ def checkPortal():
             region=config["regions"]["minimap"],
             confidence=0.7,
         )
+        """
         portalLeft = pyautogui.locateCenterOnScreen(
             "./screenshots/portalLeft.png",
             region=config["regions"]["minimap"],
-            confidence=0.8,
+            confidence=0.9,
         )
         portalRight = pyautogui.locateCenterOnScreen(
             "./screenshots/portalRight.png",
             region=config["regions"]["minimap"],
-            confidence=0.8,
+            confidence=0.9,
         )
+        """
         if portal != None:
             x, y = portal
             states["moveToX"] = x
@@ -1472,29 +1473,31 @@ def checkPortal():
                 )
             )
             return True
-        elif portalLeft != None:
-            x, y = portalLeft
-            states["moveToX"] = x + 3
-            states["moveToY"] = y
-            print(
-                "portalLeft image x: {} y: {}".format(
-                    states["moveToX"], states["moveToY"]
-                )
-            )
-            return True
-        elif portalRight != None:
-            x, y = portalRight
-            states["moveToX"] = x - 3
-            states["moveToY"] = y
-            print(
-                "portalRight image x: {} y: {}".format(
-                    states["moveToX"], states["moveToY"]
-                )
-            )
-            return True
+        # elif portalLeft != None:
+        #     x, y = portalLeft
+        #     states["moveToX"] = x + 3
+        #     states["moveToY"] = y
+        #     print(
+        #         "portalLeft image x: {} y: {}".format(
+        #             states["moveToX"], states["moveToY"]
+        #         )
+        #     )
+        #     return True
+        # elif portalRight != None:
+        #     x, y = portalRight
+        #     states["moveToX"] = x - 3
+        #     states["moveToY"] = y
+        #     print(
+        #         "portalRight image x: {} y: {}".format(
+        #             states["moveToX"], states["moveToY"]
+        #         )
+        #     )
+        #     return True
 
-    # # only check with portal image at aor
-    # if states["floor3Mode"] == True:
+    # only check with portal image at aor
+    # if states["floor3Mode"] == True and (
+    #     states["status"] == "floor2" or states["status"] == "floor3"
+    # ):
     #     return False
 
     minimap = pyautogui.screenshot(region=config["regions"]["minimap"])  # Top Right
@@ -1545,9 +1548,9 @@ def checkFloor2Elite():
         inRange = False
         if config["GFN"] == True:
             inRange = (
-                r in range(180, 215)
-                and g in range(125, 150)
-                and b in range(60, 80)
+                r in range(185, 215)
+                and g in range(125, 147)
+                and b in range(60, 78)
                 # or r in range(90, 110)
                 # and g in range(55, 70)
                 # and b in range(10, 40)
@@ -1585,7 +1588,9 @@ def checkFloor2Mob():
                 (r in range(180, 215)) and (g in range(17, 35)) and (b in range(17, 55))
             )
         else:
-            inRange = r == 208 and g == 24 and b == 24
+            inRange = (
+                (r in range(206, 211)) and (g in range(22, 27)) and (b in range(22, 27))
+            )
         if inRange:
             left, top, _w, _h = config["regions"]["minimap"]
             states["moveToX"] = left + entry[1]
@@ -1615,7 +1620,11 @@ def checkFloor3GoldMob():
                 and (b in range(29, 40))
             )
         else:
-            inRange = r == 255 and g == 188 and b == 30
+            inRange = (
+                (r in range(253, 256))
+                and (g in range(186, 191))
+                and (b in range(28, 33))
+            )
         if inRange:
             left, top, _w, _h = config["regions"]["minimap"]
             states["moveToX"] = left + entry[1]
@@ -1750,38 +1759,38 @@ def checkFloor3Tower():
         print("towerBot image x: {} y: {}".format(states["moveToX"], states["moveToY"]))
         return True
 
-    minimap = pyautogui.screenshot(region=config["regions"]["minimap"])  # Top Right
-    width, height = minimap.size
-    order = spiralSearch(width, height, math.floor(width / 2), math.floor(height / 2))
-    for entry in order:
-        if entry[1] >= width or entry[0] >= height:
-            continue
-        r, g, b = minimap.getpixel((entry[1], entry[0]))
-        inRange = False
-        if config["GFN"] == True:
-            inRange = (
-                r in range(209, 229) and g in range(40, 60) and b in range(49, 69)
-            ) or (
-                r in range(245, 256) and g in range(163, 173) and b in range(179, 189)
-            )
-        else:
-            inRange = (
-                r in range(209, 229) and g in range(40, 60) and b in range(49, 69)
-            ) or (r == 162 and g == 162 and b == 162)
-            (r in range(245, 255) and g in range(163, 173) and b in range(179, 189))
-        if inRange:
-            left, top, _w, _h = config["regions"]["minimap"]
-            states["moveToX"] = left + entry[1]
-            states["moveToY"] = top + entry[0]
-            # pos offset
-            if r in range(245, 256) and g in range(163, 173) and b in range(179, 189):
-                states["moveToY"] = states["moveToY"] + 1
-            print(
-                "tower pixel pos x: {} y: {}, r: {} g: {} b: {}".format(
-                    states["moveToX"], states["moveToY"], r, g, b
-                )
-            )
-            return True
+    # minimap = pyautogui.screenshot(region=config["regions"]["minimap"])  # Top Right
+    # width, height = minimap.size
+    # order = spiralSearch(width, height, math.floor(width / 2), math.floor(height / 2))
+    # for entry in order:
+    #     if entry[1] >= width or entry[0] >= height:
+    #         continue
+    #     r, g, b = minimap.getpixel((entry[1], entry[0]))
+    #     inRange = False
+    #     if config["GFN"] == True:
+    #         inRange = (
+    #             r in range(209, 229) and g in range(40, 60) and b in range(49, 69)
+    #         ) or (
+    #             r in range(245, 256) and g in range(163, 173) and b in range(179, 189)
+    #         )
+    #     else:
+    #         inRange = (
+    #             r in range(209, 229) and g in range(40, 60) and b in range(49, 69)
+    #         ) or (r == 162 and g == 162 and b == 162)
+    #         (r in range(245, 255) and g in range(163, 173) and b in range(179, 189))
+    #     if inRange:
+    #         left, top, _w, _h = config["regions"]["minimap"]
+    #         states["moveToX"] = left + entry[1]
+    #         states["moveToY"] = top + entry[0]
+    #         # pos offset
+    #         if r in range(245, 256) and g in range(163, 173) and b in range(179, 189):
+    #             states["moveToY"] = states["moveToY"] + 1
+    #         print(
+    #             "tower pixel pos x: {} y: {}, r: {} g: {} b: {}".format(
+    #                 states["moveToX"], states["moveToY"], r, g, b
+    #             )
+    #         )
+    #         return True
 
     return False
 
@@ -1805,13 +1814,20 @@ def checkChaosFinish():
 
 
 def fightFloor2Boss():
-    if pyautogui.locateOnScreen(
-        "./screenshots/bossBar.png", confidence=0.7, region=(406, 159, 1000, 200)
+    if states["status"] == "floor3" and pyautogui.locateOnScreen(
+        "./screenshots/bossBar.png", confidence=0.8, region=(406, 159, 1000, 200)
     ):
         print("boss bar located")
+        pydirectinput.press(config["awakening"])
+    elif states["bossBarLocated"] == False and pyautogui.locateOnScreen(
+        "./screenshots/bossBar.png", confidence=0.8, region=(406, 159, 1000, 200)
+    ):
         # pydirectinput.moveTo(x=states["moveToX"], y=states["moveToY"])
         # sleep(80, 100)
+        print("boss bar located")
         pydirectinput.press(config["awakening"])
+        states["bossBarLocated"] = True
+        sleep(2500, 3000)
 
 
 def calculateMinimapRelative(x, y):
@@ -1988,6 +2004,12 @@ def randomMove():
         config["screenCenterY"] - config["clickableAreaY"],
         config["screenCenterY"] + config["clickableAreaY"],
     )
+    if states["status"] == "floor1" or states["status"] == "floor2":
+        pydirectinput.moveTo(x=x, y=y)
+        sleep(200, 250)
+        pydirectinput.press(config["blink"])
+        sleep(200, 250)
+        return
 
     print("random move to x: {} y: {}".format(x, y))
     pydirectinput.click(x=x, y=y, button=config["move"])
@@ -1997,7 +2019,7 @@ def randomMove():
     pydirectinput.click(
         x=config["screenCenterX"], y=config["screenCenterY"], button=config["move"]
     )
-    sleep(200, 250)
+    sleep(100, 150)
 
 
 # def isPortalFlame(image, x, y):
@@ -2027,101 +2049,38 @@ def enterPortal():
     enterTime = int(time.time_ns() / 1000000)
     while True:
         nowTime = int(time.time_ns() / 1000000)
-        if nowTime - enterTime > 3000:
+        falseTime = 6000
+        if nowTime - enterTime > falseTime:
             # FIXME:
             # states["instanceStartTime"] = -1
             # badRun = pyautogui.screenshot()
             # badRun.save("./debug/badRun_" + str(nowTime) + ".png")
-            # states["badRunCount"] = states["badRunCount"] + 1
-            pydirectinput.moveTo(x=config["screenCenterX"], y=config["screenCenterY"])
-            sleep(100, 150)
-            pydirectinput.click(
-                x=config["screenCenterX"],
-                y=config["screenCenterY"],
-                button=config["move"],
-            )
-            sleep(100, 150)
+            states["badRunCount"] = states["badRunCount"] + 1
             # clear mobs a bit with first spell before scanning for portal again
             pydirectinput.press(states["abilityScreenshots"][0]["key"])
             sleep(100, 150)
+            pydirectinput.press(config["meleeAttack"])
+            sleep(100, 150)
             return False
-
-        # if states["status"] == "floor2" or states["status"] == "floor3":
-        #     portalArea = pyautogui.screenshot(region=config["regions"]["portal"])
-        #     width, height = portalArea.size
-        #     order = spiralSearch(
-        #         width, height, math.floor(width / 2), math.floor(height / 2)
-        #     )
-        #     for entry in order:
-        #         if entry[1] >= width or entry[0] >= height:
-        #             continue
-        #         if isPortalFlame(portalArea, entry[1], entry[0]):
-        #             left, top, _w, _h = config["regions"]["portal"]
-        #             states["moveToX"] = left + entry[1]
-        #             states["moveToY"] = top + entry[0]
-        #             print(
-        #                 "portal flame x: {} y: {}".format(
-        #                     states["moveToX"], states["moveToY"]
-        #                 )
-        #             )
-        #             pydirectinput.press(config["interact"])
-        #             pydirectinput.click(
-        #                 x=states["moveToX"], y=states["moveToY"], button=config["move"]
-        #             )
-        #             im = pyautogui.screenshot(region=(1652, 168, 240, 210))
-        #             r, g, b = im.getpixel((1772 - 1652, 272 - 168))
-        #             while r != 0 or g != 0 or b != 0:
-        #                 pydirectinput.press(config["interact"])
-        #                 sleep(50, 60)
-        #                 nowTime = int(time.time_ns() / 1000000)
-        #                 if nowTime - enterTime > 10000:
-        #                     # FIXME:
-        #                     states["instanceStartTime"] = -1
-        #                     return
-        #             print("portal entered")
-        #             return
-
-        # portalFlame = pyautogui.locateCenterOnScreen(
-        #     "./screenshots/portalFlame.png",
-        #     grayscale=True,
-        #     confidence=0.3,
-        # )
-        # if portalFlame != None:
-        #     x, y = portalFlame
-        #     pydirectinput.press(config["interact"])
-        #     pydirectinput.click(x=x, y=y, button=config["move"])
-        #     im = pyautogui.screenshot(region=(1652, 168, 240, 210))
-        #     r, g, b = im.getpixel((1772 - 1652, 272 - 168))
-        #     while r != 0 or g != 0 or b != 0:
-        #         pydirectinput.press(config["interact"])
-        #         sleep(50, 60)
-
-        #         nowTime = int(time.time_ns() / 1000000)
-        #         if nowTime - enterTime > 10000:
-        #             # FIXME:
-        #             states["instanceStartTime"] = -1
-        #             return
-        #     print("portal entered")
-        #     return
-
+        # hit move and press g
         if (
             states["moveToX"] == config["screenCenterX"]
             and states["moveToY"] == config["screenCenterY"]
         ):
             pydirectinput.press(config["interact"])
-            sleep(100, 120)
+            sleep(50, 60)
         else:
             pydirectinput.press(config["interact"])
             pydirectinput.click(
                 x=states["moveToX"], y=states["moveToY"], button=config["move"]
             )
-            pydirectinput.press(config["interact"])
-            sleep(60, 70)
+            sleep(50, 60)
 
         # try to enter portal until black screen
         im = pyautogui.screenshot(region=(1652, 168, 240, 210))
         r, g, b = im.getpixel((1772 - 1652, 272 - 168))
-        if r + g + b < 10:
+        # print(r + g + b)
+        if r + g + b < 60:
             print("portal entered")
             pydirectinput.moveTo(x=config["screenCenterX"], y=config["screenCenterY"])
             return True
@@ -2749,6 +2708,10 @@ def switchToCharacter(index):
     sleep(200, 300)
     pydirectinput.click(button="left")
     sleep(500, 600)
+    pydirectinput.click(button="left")
+    sleep(200, 300)
+    pydirectinput.click(button="left")
+    sleep(500, 600)
 
     pydirectinput.moveTo(
         x=config["charPositions"][index][0], y=config["charPositions"][index][1]
@@ -2760,13 +2723,22 @@ def switchToCharacter(index):
     sleep(200, 300)
     pydirectinput.click(button="left")
     sleep(500, 600)
+    pydirectinput.click(button="left")
+    sleep(200, 300)
+    pydirectinput.click(button="left")
+    sleep(500, 600)
 
     pydirectinput.moveTo(x=config["charSelectConnectX"], y=config["charSelectConnectY"])
     sleep(500, 600)
     pydirectinput.click(button="left")
     sleep(200, 300)
     pydirectinput.click(button="left")
+    sleep(500, 600)
+    pydirectinput.click(button="left")
     sleep(200, 300)
+    pydirectinput.click(button="left")
+    sleep(500, 600)
+
     pydirectinput.click(button="left")
     sleep(1000, 1000)
 
@@ -2775,9 +2747,11 @@ def switchToCharacter(index):
     pydirectinput.click(button="left")
     sleep(200, 300)
     pydirectinput.click(button="left")
-    sleep(200, 300)
+    sleep(500, 600)
     pydirectinput.click(button="left")
     sleep(200, 300)
+    pydirectinput.click(button="left")
+    sleep(500, 600)
 
     states["currentCharacter"] = index
     sleep(10000, 12000)
@@ -2791,7 +2765,7 @@ def doGuildDonation():
     pydirectinput.press("u")
     sleep(100, 200)
     pydirectinput.keyUp("alt")
-    sleep(3100, 4200)
+    sleep(4100, 5200)
 
     ok = pyautogui.locateCenterOnScreen(
         "./screenshots/ok.png", region=config["regions"]["center"], confidence=0.75
@@ -2802,20 +2776,27 @@ def doGuildDonation():
         pydirectinput.moveTo(x=x, y=y)
         sleep(300, 400)
         pydirectinput.click(x=x, y=y, button="left")
+        sleep(300, 400)
+        pydirectinput.click(x=x, y=y, button="left")
     sleep(1500, 1600)
 
     pydirectinput.moveTo(x=1431, y=843)
     sleep(500, 600)
     pydirectinput.click(button="left")
     sleep(500, 600)
+    pydirectinput.click(button="left")
+    sleep(500, 600)
 
+    # dono silver
     pydirectinput.moveTo(x=767, y=561)
+    sleep(500, 600)
+    pydirectinput.click(button="left")
     sleep(500, 600)
     pydirectinput.click(button="left")
     sleep(500, 600)
 
     pydirectinput.press("esc")
-    sleep(1500, 1600)
+    sleep(2500, 2600)
 
     supportResearch = pyautogui.locateCenterOnScreen(
         "./screenshots/supportResearch.png",
@@ -2827,6 +2808,10 @@ def doGuildDonation():
         x, y = supportResearch
         print("supportResearch")
         pydirectinput.moveTo(x=x, y=y)
+        sleep(500, 600)
+        pydirectinput.click(button="left")
+        sleep(500, 600)
+        pydirectinput.click(button="left")
         sleep(500, 600)
         pydirectinput.click(button="left")
         sleep(1500, 1600)
@@ -2842,8 +2827,16 @@ def doGuildDonation():
             sleep(500, 600)
             pydirectinput.click(button="left")
             sleep(500, 600)
+            pydirectinput.click(button="left")
+            sleep(500, 600)
+            pydirectinput.click(button="left")
+            sleep(500, 600)
 
             pydirectinput.moveTo(x=921, y=701)
+            sleep(500, 600)
+            pydirectinput.click(button="left")
+            sleep(500, 600)
+            pydirectinput.click(button="left")
             sleep(500, 600)
             pydirectinput.click(button="left")
             sleep(500, 600)
@@ -2851,9 +2844,9 @@ def doGuildDonation():
             pydirectinput.press("esc")
             sleep(800, 900)
 
-    sleep(800, 900)
+    sleep(1800, 1900)
     pydirectinput.press("esc")
-    sleep(800, 900)
+    sleep(1800, 1900)
 
 
 def doRapport():
@@ -2941,6 +2934,7 @@ def doLopang():
     sleep(1000, 2000)
     print("accepting lopang daily")
     doDaily = acceptLopangDaily()
+    sleep(1500, 1600)
     if doDaily == False:
         return
     sleep(500, 600)
@@ -2949,7 +2943,7 @@ def doLopang():
     if offlineCheck():
         return
 
-    sleep(3500, 4600)
+    sleep(1500, 1600)
 
     # goto lopang island
     bifrostAvailable = bifrostGoTo(0)
@@ -2961,18 +2955,21 @@ def doLopang():
         return
     sleep(3500, 4600)
     walkLopang()
+    sleep(1500, 1600)
     bifrostGoTo(1)
     if gameCrashCheck():
         return
     if offlineCheck():
         return
     spamG(10000)
+    sleep(1500, 1600)
     bifrostGoTo(3)
     if gameCrashCheck():
         return
     if offlineCheck():
         return
     spamG(10000)
+    sleep(1500, 1600)
     bifrostGoTo(4)
     if gameCrashCheck():
         return
@@ -2995,9 +2992,11 @@ def bifrostGoTo(option):
     pydirectinput.press("w")
     sleep(300, 400)
     pydirectinput.keyUp("alt")
-    sleep(1500, 1600)
+    sleep(2500, 2600)
 
     pydirectinput.moveTo(x=bifrostXY[option][0], y=bifrostXY[option][1])
+    sleep(1800, 1900)
+    pydirectinput.click(button="left")
     sleep(500, 600)
     pydirectinput.click(button="left")
     sleep(1500, 1600)
@@ -3013,6 +3012,10 @@ def bifrostGoTo(option):
         # ok
         pydirectinput.moveTo(x=918, y=617)
         sleep(1500, 1600)
+        pydirectinput.click(button="left")
+        sleep(500, 600)
+        pydirectinput.click(button="left")
+        sleep(500, 600)
         pydirectinput.click(button="left")
 
     sleep(10000, 12000)
@@ -3095,12 +3098,12 @@ def acceptLopangDaily():
     sleep(1900, 2200)
 
     pydirectinput.moveTo(x=564, y=313)
-    sleep(800, 900)
+    sleep(1800, 1900)
     pydirectinput.click(button="left")
     sleep(800, 900)
 
     pydirectinput.moveTo(x=528, y=397)
-    sleep(800, 900)
+    sleep(1800, 1900)
     pydirectinput.click(button="left")
     sleep(800, 900)
 
