@@ -15,7 +15,7 @@
     config must be set up correctly in order for the bot to work properly on your machine.
     Refer to the inline comments below:
 
-    For Lopang enjoyers:
+    For Lopang enjoyers: https://github.com/any-other-guy/LostArk-Endless-Chaos/issues/15
     Set your first bifrost point to be at lopang island.
     Exact location to be right in front of the NPC machine which stands farthest to the entrance.
     Then set your 2/4/5 (because i dont have no3 unlocked) bifrost location to be right in front of those three lopang quest hand-in NPCs.
@@ -89,7 +89,7 @@ config = {
             "rapport": False,
         },
     ],
-    "floor3Mode": False,  # only enable if you ONLY want to run infinite floor3 clearing
+    "floor3Mode": True,  # only enable if you ONLY want to run infinite floor3 clearing
     "selectLevel": True,  # TODO: to be deprecated soon, DO NOT TOUCH
     "performance": False,  # set True for lower-end PCs
     "interact": "g",  # change this if you have binded it to something else eg.mouse button
@@ -98,7 +98,7 @@ config = {
     "meleeAttack": "c",
     "awakening": "v",
     "healthPot": "f1",  # important to put your regen potion on this button
-    "healthPotAtPercent": 0.3,  # health threshold to trigger potion
+    "healthPotAtPercent": 0.35,  # health threshold to trigger potion
     # "useAwakening": True, # not checking this for now
     # "useSpeciality1": True, # not checking this for now
     # "useSpeciality2": True, # not checking this for now
@@ -123,8 +123,8 @@ config = {
     "screenCenterY": 540,
     "minimapCenterX": 1772,
     "minimapCenterY": 272,
-    "timeLimit": 500000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
-    "timeLimitAor": 600000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
+    "timeLimit": 480000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
+    "timeLimitAor": 900000,  # to prevent unexpected amount of time spent in a chaos dungeon, a tiem limit is set here, will quit after this amount of seconds
     "blackScreenTimeLimit": 30000,  # if stuck in nothing for this amount of time, alt f4 game, restart and resume.
     "delayedStart": 3000,
     "healthCheckX": 690,
