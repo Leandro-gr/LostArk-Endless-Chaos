@@ -33,7 +33,7 @@ newStates = {
     "floor3Mode": True,
     "multiCharacterMode": True,
     "currentCharacter": config["mainCharacter"],
-    "multiCharacterModeState": [0, 1, 2, 2, 6, 6],
+    "multiCharacterModeState": [0, 0, 0, 0, 2, 2]
 }
 
 
