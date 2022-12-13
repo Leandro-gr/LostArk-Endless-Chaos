@@ -30,10 +30,10 @@ newStates = {
     "gameOfflineCount": 0,
     "minTime": config["timeLimit"],
     "maxTime": -1,
-    "floor3Mode": True,
+    "floor3Mode": False,
     "multiCharacterMode": True,
     "currentCharacter": config["mainCharacter"],
-    "multiCharacterModeState": [0, 0, 0, 0, 2, 2]
+    "multiCharacterModeState": [2, 2, 2, 2, 2, 2]
 }
 
 
