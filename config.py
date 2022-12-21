@@ -46,8 +46,8 @@ config = {
         {
             "index": 1,
             "class": "glaiver",
-            "ilvl-endless": 1325,
-            "ilvl-aor": 1325,
+            "ilvl-endless": 1100,
+            "ilvl-aor": 1100,
             "lopang": True,
             "guildDonation": True,
             "rapport": False,
@@ -64,8 +64,8 @@ config = {
         {
             "index": 3,
             "class": "sorceress",
-            "ilvl-endless": 1325,
-            "ilvl-aor": 1325,
+            "ilvl-endless": 1100,
+            "ilvl-aor": 1100,
             "lopang": True,
             "guildDonation": True,
             "rapport": False,
@@ -73,8 +73,8 @@ config = {
         {
             "index": 4,
             "class": "berserker",
-            "ilvl-endless": 00,
-            "ilvl-aor": 00,
+            "ilvl-endless": 1100,
+            "ilvl-aor": 1100,
             "lopang": True,
             "guildDonation": True,
             "rapport": False,
